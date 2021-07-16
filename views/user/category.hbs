@@ -1,0 +1,111 @@
+<div class="header-bottom">
+    <!--header-bottom-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="mainmenu pull-left">
+                    <ul class="nav navbar-nav collapse navbar-collapse">
+                        <li><a href="/" class="active">Home</a></li>
+                        <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                            <ul role="menu" class="sub-menu">
+                                {{#if user}}
+                                <li><a href="/orders">Orders</a></li>
+                                <li><a href="/cart">Cart</a></li>
+                                <li><a href="/MyCoupons">My Coupons</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                                {{else}}
+                                <li><a href="/login">Login</a></li>
+                                {{/if}}
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="#">Category<i class="fa fa-angle-down"></i></a>
+                            <ul role="menu" class="sub-menu">
+                                {{#each category}}
+                                <li><a href="/category/{{this._id}}">{{this.Category}}</a></li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-sm-3 pull-right">
+                <input type="text" id="myFilter" class="form-control" onkeyup="mySearch()"
+                    placeholder="Search here...">
+            </div>
+        </div>
+    </div>
+</div>
+<!--/header-bottom-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 padding-right">
+                <div class="features_items" id="MyItems">
+                    <!--features_items-->
+                    <h2 class="title text-center">{{Category.Category}}</h2>
+                    {{#each product}}
+                    <div class="col-sm-3 myProd" style="min-height: 45rem;">
+                        <div class="product-image-wrapper">
+                            <div class="single-products product-item">
+                                <div class="product-info text-center" id="product-info">
+                                    <a href="/productDetails/{{this._id}}">
+                                        <img style="width: 15rem; height:23rem;" src="/product-images/{{this._id}}1.jpg"
+                                            alt="" />
+                                    </a>
+                                    {{#if this.ActualPrice}}
+                                    <del>
+                                        <h4 class="price" id="price">₹{{this.ActualPrice}}</h4>
+                                    </del>
+                                    <h4 class="offerprice" id="offerprice">₹{{this.Price}}</h4>
+                                    {{else}}
+                                    <h4 class="offerprice" id="offerprice">₹{{this.Price}}</h4>
+                                    {{/if}}
+                                    <p class="name" id="name">{{this.Name}}</p>
+                                    <p class="category" id="category">{{this.Category}}</p>
+                                    <button class="btn btn-default add-to-cart" onclick="addToCart('{{this._id}}')">Add
+                                        to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function mySearch() {
+        var input, filter, cards, cardContainer, p, title, i;
+        input = document.getElementById("myFilter");
+        filter = input.value.toUpperCase();
+        cardContainer = document.getElementById("MyItems");
+        cards = cardContainer.getElementsByClassName("product-item");
+        myProd = document.getElementsByClassName("myProd")
+        console.log('input' + input)
+        console.log('filter' + filter)
+        console.log('cardContainer' + cardContainer)
+        console.log('cards' + cards)
+
+
+        for (i = 0; i < cards.length; i++) {
+            title = cards[i].querySelector(".product-info p.name");
+            console.log('title' + title)
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                myProd[i].style.display = "";
+            } else {
+                myProd[i].style.display = "none";
+            }
+        }
+    }
+</script>

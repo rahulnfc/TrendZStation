@@ -1,0 +1,133 @@
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-sm-12">
+                    <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
+                                class="fa fa-arrow-left"></i></a> Sales Report </h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin"><i class="icon-home"></i></a></li>
+                        <li class="breadcrumb-item">Table</li>
+                        <li class="breadcrumb-item active"> Sales Report</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Sales Details <small>search by date for result the sales</small> </h2>
+                    </div>
+                    <div class="container">
+                        <form method="POST" action="/findReportbyDate">
+                            <label>From Date</label>
+                            <input type="date" id="fromDate" name="fromDate" onchange="handler(event)">
+                            To Date
+                            <input type="Date" id="toDate" name="toDate">
+                            <button type="submit" id="button">search</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-12 col-md-12 mt-5">
+                        <div class="card">
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <h3><span class="text-muted">Sales Report</span></h3>
+                                        <h3 class="text-warning"></h3>
+                                    </div>
+                                </div>
+                                <canvas id="myChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['February', 'March', 'April'],
+            datasets: [{
+                label: '# Monthly Sales Report',
+                data: [{{ monthsales.total }}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+        options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+    var mixedChart = new Chart(ctx, {
+        data: {
+            datasets: [{
+                type: 'bar',
+                label: 'Bar Dataset',
+                data: [10, 20, 30, 40]
+            }, {
+                type: 'line',
+                label: 'Line Dataset',
+                data: [50, 50, 50, 50],
+            }],
+            labels: ['January', 'February', 'March', 'April']
+        },
+        options: options
+    });
+</script>
+
+<script>
+    function handler(e) {
+        var first = e.target.value
+        console.log('1111111111111111111', first)
+        document.getElementById('toDate').min = first
+    }
+
+</script>
+
+{{!--
+<script>
+
+    $(function () {
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#fromDate').attr('min', maxDate);
+        $('#toDate').attr('min', maxDate);
+    });
+</script> --}}

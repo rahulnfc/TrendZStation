@@ -1,0 +1,189 @@
+<section id="form">
+	<!--form-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-1">
+				<div class="login-form">
+					<!--login form-->
+					<h2>Login to your account</h2>
+					<form id="user-login" action="/login" method="POST">
+						{{#if loginErr}}
+						<span style="color: red;">Invalid email and password</span>
+						{{/if}}
+						{{#if userBlocked}}
+						<span style="color: red;">{{userBlocked}}</span>
+						{{/if}}
+						<input type="email" name="Email" placeholder="Email Address" />
+						<input type="password" name="Password" placeholder="Password" />
+						<span>
+							<input type="checkbox" class="checkbox">
+							Keep me signed in
+						</span>
+						<button type="submit" class="btn btn-default">Login</button>
+					</form>
+
+					<div style="margin-top: 5rem;" id="send">
+						<form id="sendotp">
+							<h2>Login with OTP</h2>
+							<input type="number" name="Mob" id="Mob" placeholder="Mobile Number" />
+							<div id="showErrPhone" style="display: none;">
+								<p style="color: red;">Phone Number Not Registered</p>
+							</div>
+							<button type="submit" class="btn btn-default" id="butt">Submit</button>
+						</form>
+					</div>
+					<div style="margin-top: 5rem; display: none;" id="otp">
+						<form id="verifyotp" action="/verify-otp" method="POST">
+							<h2>Enter your OTP</h2>
+							<input type="number" name="OTP" id="OTP" placeholder="Enter OTP" />
+							<div id="showErrOTP" style="display: none;">
+								<p style="color: red;">OTP is not Valid</p>
+							</div>
+							<button type="submit" class="btn btn-default" id="butt2">Verify</button>
+						</form>
+					</div>
+				</div>
+				<!--/login form-->
+			</div>
+			<div class="col-sm-1">
+				<h2 class="or">OR</h2>
+			</div>
+			<div class="col-sm-4">
+				<div class="signup-form">
+					<!--sign up form-->
+					<h2>New User Signup!</h2>
+					<form id="user-signup" action="/signup" method="POST">
+						<input type="text" name="Name" id="Name" placeholder="Name" />
+						<input type="text" name="Username" id="Username" placeholder="Username" />
+						{{#if emailExist}}
+						<p style="color: red;">Email already exist</p>
+						{{/if}}
+						<div class="wrap-input100 validate-input">
+							<input type="text" name="referal" id="referal" placeholder="Enter the referal code" />
+							<h5 style="color:seagreen;">leave this column if you don't have a referal</h5>
+						</div>
+						<input type="email" name="Email" id="Email" placeholder="Email Address" />
+						<input type="number" name="Mobile" id="Mobile" placeholder="Mobile Number" />
+						<input type="password" name="Password" id="Password" placeholder="Password" />
+						<input type="password" name="CPassword" id="CPassword" placeholder="Confirm Password" />
+						<div id="showErrPwd" style="display: none;">
+							<p style="color: red;">OTP is not Valid</p>
+						</div>
+						<button type="submit" class="btn btn-default">Signup</button>
+					</form>
+				</div>
+				<!--/sign up form-->
+			</div>
+		</div>
+	</div>
+</section>
+<!--/form-->
+
+{{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+<script>
+	$(document).ready(function () {
+		$('#CPassword').keyup(function () {
+			console.log("hiii")
+			var Password = $('#Password').val();
+			var CPassword = $('#CPassword').val();
+			if (CPassword != Password) {
+				$('#showErrPwd').html('**Password are not matching');
+				$('#showErrPwd').css('color', 'red');
+				return false;
+			} else {
+				$('#showErrPwd').html('');
+				return true;
+			}
+		});
+
+
+		$("#user-signup").validate({
+			rules: {
+				Name: {
+					required: true,
+					minlength: 3
+				},
+				Username: {
+					required: true,
+					minlength: 3
+				},
+				Email: {
+					required: true,
+					email: true
+				},
+				Mobile: {
+					required: true,
+					Number: true,
+					maxlength: 10
+				},
+				Password: {
+					required: true,
+					minlength: 5
+				},
+				CPassword: {
+					required: true,
+					minlength: 5
+				}
+			}
+		});
+
+		$(document).ready(() => {
+			$("#user-login").validate({
+				rules: {
+					Email: {
+						required: true,
+						email: true
+					},
+					Password: {
+						required: true,
+						password: true
+					}
+				}
+			});
+		});
+	});
+
+</script>
+
+<script>
+	$('#butt').click((e) => {
+		e.preventDefault()
+		let Mobile = $('#Mob').val()
+		$.ajax({
+			url: '/send-otp',
+			method: 'post',
+			data: {
+				Mobile
+			},
+			success: (response) => {
+				if (response.response.otp) {
+					$('#send').hide()
+					$('#otp').show()
+				} else {
+					$('#showErrPhone').show()
+				}
+			}
+		})
+	})
+
+	$('#butt2').click((e) => {
+		e.preventDefault()
+		let OTP = $('#OTP').val()
+		console.log('11111111111111111111111111',OTP)
+		$.ajax({
+			url: '/verify-otp',
+			method: 'post',
+			data: {
+				OTP
+			},
+			success: (response) => {
+				if (response.otp) {
+					window.location.href = ('/')
+				} else {
+					$('#showErrOTP').show()
+					
+				}
+			}
+		})
+	})
+</script>

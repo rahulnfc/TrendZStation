@@ -1,0 +1,417 @@
+<section id="cart_items">
+	<div class="container">
+		{{#each address}}
+		<div class="col-sm-6" style="margin-bottom: 4%; margin-top: 2%;">
+			<h3 style="color:darkblue;">Your Address</h3>
+			<h5>{{this.Name}}</h5>
+			<h5>{{this.Phone}}</h5>
+			<h5>{{this.Email}}, {{this.Country}}, {{this.State}}, Pin - {{this.Pincode}}</h5>
+			<button type="submit" class="btn btn-success"
+				onclick="changeAddress('{{this.Name}}','{{this.Phone}}','{{this.Email}}','{{this.Country}}','{{this.State}}','{{this.Pincode}}')"
+				style="font-weight: bolder;">Use this Address</button>
+		</div>
+		{{/each}}
+		<hr>
+
+		<div class="shopper-informations">
+			<div class="row">
+				<form id="checkout" action="" method="post">
+					<div class="col-sm-8">
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" class="form-control" id="name" name="Name" placeholder=" Name">
+						</div>
+						<input type="text" name="offerId" id="offerId" hidden>
+						<div class="form-group col-sm-6">
+							<label>Phone Number</label>
+							<input type="number" class="form-control" id="phoneNumber" name="Phone"
+								placeholder="Phone Number">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Email</label>
+							<input type="email" class="form-control" id="email" name="Email"
+								placeholder=" Email Address">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Country</label>
+							<input type="text" class="form-control" id="country" name="Country" placeholder=" Country">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>State</label>
+							<input type="text" class="form-control" id="state" name="State" placeholder=" State">
+						</div>
+						<div class="form-group">
+							<label>Pin Code</label>
+							<input type="number" class="form-control" id="pincode" name="Pincode"
+								placeholder=" Enter Pincode">
+							<input type="text" name="UserId" id="" value="{{user._id}}" hidden>
+						</div><br>
+						<div class="form-group">
+							<h4><b>Payment Method</b></h4>
+							<span>
+								<label><input type="radio" name="Payment" value="COD"> Cash on Delivery</label>
+							</span>
+							<span>
+								<label><input type="radio" name="Payment" value="RAZORPAY"> Razorpay</label>
+							</span>
+							<span>
+								<label><input type="radio" name="Payment" value="PAYPAL"> Paypal</label>
+							</span>
+						</div>
+						{{!-- <div>
+							<a class="btn btn-warning text-dark" href="/add-address">Add New Address</a>
+							<button type="submit" class="btn btn-success text-dark">Continue to Payment</button>
+						</div><br>
+						<div class="mt-5" name="paypal" id="paypal-button-container"> </div> --}}
+					</div>
+
+					<div class="col-md-4 order-md-2 mb-4">
+						<ul class="list-group mb-3">
+							<li class="list-group-item d-flex justify-content-between lh-condensed">
+								<div>
+									<h6 class="my-0">Discount from Referal Credits</h6>
+									<small class="text-muted">Discount from referal credits</small>
+								</div>
+								{{#if credits}} <span class="text-muted">₹{{credits}}</span>{{else}}<span
+									class="text-muted">₹0</span>{{/if}}
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-condensed">
+								<div>
+									<h6 class="my-0">Discount in (%)</h6>
+									<small class="text-muted">discount applied in percentage</small>
+								</div>
+								<span class="text-muted" id="discountprice">{{Offer}}</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-condensed">
+								<div>
+									<h6 class="my-0">Actual price</h6>
+									<small class="text-muted">price without discount</small>
+								</div>
+								<span class="text-muted">₹
+									{{total}}</span>
+							</li>
+
+							<li class="list-group-item d-flex justify-content-between bg-light">
+								<div class="text-success">
+									<h6 class="my-0">Voucher Code discount </h6>
+									<small>voucher-discount</small>
+								</div>
+								<span class="text-success" id="voucher-discount"> </span>
+							</li>
+
+							<li class="list-group-item d-flex justify-content-between">
+								<span>Total (Rupees)</span>
+								<strong id="grandTotal">{{total}}</strong>
+							</li>
+						</ul>
+
+						<div class="input-group">
+							<input type="text" value="{{user._id}}" style="display:none;" id="input-user">
+							<input type="text" class="form-control" id="input-coupon" name="coupon"
+								placeholder="Promo code">
+							<div class="input-group-append" style="margin-top: 7%;">
+								<a type="coupon" id="coupon-code" onclick="applyCoupon()" class="btn btn-info"
+									style="color: rgb(24, 3, 12);">Reedem code</a>
+							</div>
+							<div style="margin-top: 7%;">
+								<a class="btn btn-warning text-dark" href="/add-address">Add New Address</a>
+								<button type="submit" class="btn btn-success text-dark">Continue to Payment</button>
+							</div><br>
+							<div class="mt-5" name="paypal" id="paypal-button-container"> </div>
+							<p id="success" style="display: none; color: red;"><strong>*suucess coupon
+									applied</strong></p>
+							<p id="used" style="display: none; color: red;"><strong>*coupon is alreadey used cannot
+									apply</strong></p>
+							<p id="invalid" style="display: none; color: red;"><strong>*invalid coupon try the
+									correct couopon code</strong></p>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><br><br>
+</section>
+<!--/#cart_items-->
+
+<script>
+	$(document).ready(() => {
+		$("#checkout").validate({
+			rules: {
+				Name: {
+					required: true,
+					minlength: 3
+				},
+				Phone: {
+					required: true,
+					number: true
+				},
+				Email: {
+					required: true,
+					email: true
+				},
+				Country: {
+					required: true
+				},
+				State: {
+					required: true
+				},
+				Pincode: {
+					required: true,
+					minlength: 6,
+					maxlength: 6
+				},
+				Payment: {
+					required: true,
+
+				}
+			},
+			submitHandler: function (form, e) {
+				e.preventDefault()
+				$.ajax({
+					url: '/place-order',
+					method: 'POST',
+					data: $('#checkout').serialize(),
+					success: (response) => {
+
+						alert(response)
+						if (response.codSuccess) {
+							alert('Order Placed Successfuly!');
+							window.location.href = ('/order-success')
+						} else if (response.paypal) {
+							console.log('response', response.paypal)
+							// Render the PayPal button into #paypal-button-container
+							paypal.Buttons({
+								// Set up the transaction
+								createOrder: function (data, actions) {
+									return actions.order.create({
+										purchase_units: [{
+											amount: {
+												value: response.total
+											}
+										}]
+									});
+								},
+								// Finalize the transaction
+								onApprove: function (data, actions) {
+									return actions.order.capture().then(function (details) {
+										// Show a success message to the buyer
+										alert('Transaction Completed Successfuly!');
+										window.location.href = ('/change-status/' + response.orderId);
+									});
+								}
+							}).render('#paypal-button-container');
+
+						} else {
+							razorpayPayment(response)
+						}
+					}
+				})
+			}
+		});
+
+		function razorpayPayment(order) {
+			var options = {
+				"key": "rzp_test_XyxrCNSUqYCkHE", // Enter the Key ID generated from the Dashboard
+				"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+				"currency": "INR",
+				"name": "TrendZStation",
+				"description": "Test Transaction",
+				"image": "../images/home/logo.png",
+				"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+				"handler": function (response) {
+					verifyPayment(response, order)
+				},
+				"prefill": {
+					"name": "Rahul Karuvadath",
+					"email": "rahulraghav093@gmail.com",
+					"contact": "9633405594"
+				},
+				"notes": {
+					"address": "Razorpay Corporate Office"
+				},
+				"theme": {
+					"color": "#3399cc"
+				}
+			};
+			var rzp1 = new Razorpay(options);
+			rzp1.open();
+		}
+		function verifyPayment(payment, order) {
+			$.ajax({
+				url: '/verify-payment',
+				data: {
+					payment,
+					order
+				},
+				method: 'post',
+				success: (response) => {
+					if (response.status) {
+						alert('Transaction Completed Successfuly!');
+						window.location.href = ('/order-success')
+					} else {
+						alert('Payment Failed')
+					}
+				}
+			})
+		}
+	});
+</script>
+
+<script>
+	function changeAddress(Name, Phone, Email, Country, State, Pincode) {
+		document.getElementById('name').value = Name
+		document.getElementById('phoneNumber').value = Phone
+		document.getElementById('email').value = Email
+		document.getElementById('country').value = Country
+		document.getElementById('state').value = State
+		document.getElementById('pincode').value = Pincode
+	}
+</script>
+
+<script>
+	function applyCoupon() {
+		console.log('ividund')
+		let coupon = $('#input-coupon').val()
+		let user = $('#input-user').val()
+		console.log("couponhere", coupon)
+		$.ajax({
+			url: '/verifyCoupon',
+			method: 'POST',
+			data: {
+				coupon,
+				user
+			},
+			success: (response) => {
+
+				if (response.status == 0) {
+
+					$('#success').show()
+					$('#used').hide()
+					$('#invalid').hide()
+					let totalAmount = document.getElementById('grandTotal').innerHTML
+					let discountPrice = totalAmount * (100 - response.offer) / 100
+
+
+					document.getElementById('grandTotal').innerHTML = discountPrice
+					document.getElementById('voucher-discount').innerHTML = discountPrice
+					document.getElementById('discountprice').innerHTML = response.offer
+
+					$('#offerId').val(response.offer)
+					console.log('@@@@@@@@@@', discountPrice)
+
+
+				}
+				else if (response.status == 2) {
+					$('#used').show()
+					$('#success').hide()
+					$('#invalid').hide()
+				}
+				else if (response.status == 1) {
+					$('#invalid').show()
+					$('#used').hide()
+					$('#success').hide()
+				}
+			}
+
+		})
+	}
+
+</script>
+
+{{!--
+<script>
+	$("#checkout").submit((e) => {
+		e.preventDefault()
+		if ($('input[name="Payment"]:checked').length == 0) {
+			alert('please fill the form completely');
+			return false;
+		}
+		else {
+			$.ajax({
+				url: '/place-order',
+				method: 'POST',
+				data: $('#checkout').serialize(),
+				success: (response) => {
+
+					alert(response)
+					if (response.codSuccess) {
+						alert('Order Placed Successfuly!');
+						window.location.href = ('/order-success')
+					} else if (response.paypal) {
+						console.log('response', response.paypal)
+						// Render the PayPal button into #paypal-button-container
+						paypal.Buttons({
+							// Set up the transaction
+							createOrder: function (data, actions) {
+								return actions.order.create({
+									purchase_units: [{
+										amount: {
+											value: response.total
+										}
+									}]
+								});
+							},
+							// Finalize the transaction
+							onApprove: function (data, actions) {
+								return actions.order.capture().then(function (details) {
+									// Show a success message to the buyer
+									alert('Transaction Completed Successfuly!');
+									window.location.href = ('/change-status/' + response.orderId);
+								});
+							}
+						}).render('#paypal-button-container');
+
+					} else {
+						razorpayPayment(response)
+					}
+				}
+			})
+		}
+	})
+
+	function razorpayPayment(order) {
+		var options = {
+			"key": "rzp_test_XyxrCNSUqYCkHE", // Enter the Key ID generated from the Dashboard
+			"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+			"currency": "INR",
+			"name": "TrendZStation",
+			"description": "Test Transaction",
+			"image": "../images/home/logo.png",
+			"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+			"handler": function (response) {
+				verifyPayment(response, order)
+			},
+			"prefill": {
+				"name": "Rahul Karuvadath",
+				"email": "rahulraghav093@gmail.com",
+				"contact": "9633405594"
+			},
+			"notes": {
+				"address": "Razorpay Corporate Office"
+			},
+			"theme": {
+				"color": "#3399cc"
+			}
+		};
+		var rzp1 = new Razorpay(options);
+		rzp1.open();
+	}
+	function verifyPayment(payment, order) {
+		$.ajax({
+			url: '/verify-payment',
+			data: {
+				payment,
+				order
+			},
+			method: 'post',
+			success: (response) => {
+				if (response.status) {
+					alert('Transaction Completed Successfuly!');
+					window.location.href = ('/order-success')
+				} else {
+					alert('Payment Failed')
+				}
+			}
+		})
+	}
+</script> --}}

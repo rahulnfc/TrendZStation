@@ -1,0 +1,216 @@
+<div id="wrapper">
+    <div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-5 col-md-8 col-sm-12">
+                        <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
+                                    class="fa fa-arrow-left"></i></a>Dashboard</h2>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html"><i class="icon-home"></i></a></li>
+                            <li class="breadcrumb-item active">TrendZStation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card overflowhidden">
+                        <div class="body">
+                            <h3>{{ordercount}}<i class="icon-basket-loaded float-right"></i></h3>
+                            <span>Products Sold</span>
+                        </div>
+                        <div class="progress progress-xs progress-transparent custom-color-blue m-b-0">
+                            <div class="progress-bar" data-transitiongoal="64"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card overflowhidden">
+                        <div class="body">
+                            <h3>{{usercount}}<i class="icon-user-follow float-right"></i></h3>
+                            <span>New users</span>
+                        </div>
+                        <div class="progress progress-xs progress-transparent custom-color-purple m-b-0">
+                            <div class="progress-bar" data-transitiongoal="67"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card overflowhidden">
+                        <div class="body">
+                            <h3>{{#each Revenue}} {{this.totalAmount}} {{/each}}<i class="fa fa-rupee float-right"></i>
+                            </h3>
+                            <span>Net Profit</span>
+                        </div>
+                        <div class="progress progress-xs progress-transparent custom-color-yellow m-b-0">
+                            <div class="progress-bar" data-transitiongoal="89"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card overflowhidden">
+                        <div class="body">
+                            <h3>{{totalProducts}}<i class=" icon-bag float-right"></i></h3>
+                            <span>Total Products</span>
+                        </div>
+                        <div class="progress progress-xs progress-transparent custom-color-green m-b-0">
+                            <div class="progress-bar" data-transitiongoal="68"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                {{!-- <div class="col-lg-4 col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Income Analysis<small>8% High then last month</small></h2>
+                        </div>
+                        <div class="body">
+                            <div class="sparkline-pie text-center">6,4,8</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="header">
+                            <h2>Sales Income</h2>
+                        </div>
+                        <div class="body">
+                            <h6>Overall <b class="text-success">7,000</b></h6>
+                            <div class="sparkline" data-type="line" data-spot-Radius="2"
+                                data-highlight-Spot-Color="#445771" data-highlight-Line-Color="#222"
+                                data-min-Spot-Color="#445771" data-max-Spot-Color="#445771" data-spot-Color="#445771"
+                                data-offset="90" data-width="100%" data-height="95px" data-line-Width="1"
+                                data-line-Color="#ffcd55" data-fill-Color="#ffcd55">
+                                2,4,3,1,5,7,3,2</div>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <h3><span class="text-muted">Perspectives</span></h3>
+                                    <h3 class="text-warning"></h3>
+                                </div>
+                            </div>
+                            <canvas id="myChart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <h3><span class="text-muted">Sales Report</span></h3>
+                                    <h3 class="text-warning"></h3>
+                                </div>
+                            </div>
+                            <canvas id="myChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+     var ctx = document.getElementById('myChart1');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['users', 'orders', 'completed orders', 'canceled orders', 'total products'],
+            datasets: [{
+                label: '# Perspectives',
+                data: [{{usercount}}, {{ordercount}}, {{completed_orders}}, {{canceled_orders}}, {{totalProducts}}],
+    backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+var ctx = document.getElementById('myChart2');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['February', 'March', 'April'],
+        datasets: [{
+            label: '# Monthly Sales Report',
+            data: [{{monthsales.total}}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+var mixedChart = new Chart(ctx, {
+    data: {
+        datasets: [{
+            type: 'bar',
+            label: 'Bar Dataset',
+            data: [10, 20, 30, 40]
+        }, {
+            type: 'line',
+            label: 'Line Dataset',
+            data: [50, 50, 50, 50],
+        }],
+        labels: ['January', 'February', 'March', 'April']
+    },
+    options: options
+});
+
+</script>

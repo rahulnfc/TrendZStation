@@ -1,0 +1,376 @@
+<div class="container col-md-6">
+    <div class="card" style="margin-top: 12rem;">
+        <div class="header">
+            <p class="lead">Edit Product</p>
+        </div>
+        <div class="body ml-5">
+            <form class="form-auth-small" id="edit-product" action="/editProduct/{{product._id}}" method="post"
+                enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="Name" placeholder="Name" value="{{product.Name}}">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="Category" name="Category" class="form-control" placeholder="{{product.Category}}">
+                        {{#each category}}
+                        <option value="{{this.Category}}">{{this.Category}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" class="form-control" name="Description" placeholder="Description"
+                        value="{{product.Description}}">
+                </div>
+
+                <div id="" class="">
+                    <h5 class="mgtp-15 mgbt-xs-20"> Product Images</h5>
+
+                    <div class="form-group">
+
+                        <div class="row mt-2">
+                            <div class="col-md-5">
+                                <span class="btn vd_btn vd_bg-green fileinput-button">
+                                    <!-- The file input field used as target for the file upload widget -->
+                                    <input type="file" accept="image/*" name="image1" id="fileupload1"
+                                        class="js-photo-upload" onchange="viewImage1(event)" onclick="firstImage()"
+                                        required>
+                                </span>
+                            </div>
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="result"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="button" id="load" class="btn btn-primary save">Save
+                                                changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 id="not-img1-error" style="color: rgb(163, 24, 24);display: none;">!! Please upload a
+                                image !!</h6>
+                            <div class="col-md-3">
+                                <img src="/product-images/{{product._id}}1.jpg" style="width: 60px;" alt="product image"
+                                    id="img1Disp" class="img1Disp" />
+                                <textarea name="imageBase64Data1" id="imageBase64Data1" cols="30" rows="10"
+                                    hidden></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-5">
+                                <span class="btn vd_btn vd_bg-green fileinput-button">
+                                    <!-- The file input field used as target for the file upload widget -->
+                                    <input type="file" onchange="viewImage2(event)" accept="image/*" name="image2"
+                                        id="fileupload2" onclick="secondImage()" required class="js-photo-upload" />
+                                </span><br><br>
+                            </div>
+                            <h6 id="not-img2-error" style="color: rgb(163, 24, 24);display: none">!! Please upload a
+                                image !!</h6>
+                            <div class="col-md-3">
+                                <img src="/product-images/{{product._id}}2.jpg" style="width: 60px;" alt="product image"
+                                    id="img2Disp" class="img2Disp" />
+                                <textarea name="imageBase64Data2" id="imageBase64Data2" cols="30" rows="10"
+                                    hidden></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-5">
+                                <span class="btn vd_btn vd_bg-green fileinput-button">
+                                    <!-- The file input field used as target for the file upload widget -->
+                                    <input type="file" required onchange="viewImage3(event)" accept="image/*"
+                                        name="image3" id="fileupload3" onclick="thirdImage()" class="js-photo-upload" />
+                                </span><br><br>
+                            </div>
+                            <h6 id="not-img3-error" style="color: rgb(163, 24, 24);display: none">!! Please upload a
+                                image !!</h6>
+                            <div class="col-md-3">
+                                <img src="/product-images/{{product._id}}3.jpg" style="width: 60px;" alt="product image"
+                                    id="img3Disp" class="img3Disp" />
+                                <textarea name="imageBase64Data3" id="imageBase64Data3" cols="30" rows="10"
+                                    hidden></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" class="form-control" name="Price" placeholder="Price"
+                        value="{{product.Price}}">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Edit Product</button><br>
+                <div class="bottom">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            $("#edit-product").validate({
+                rules: {
+                    Name: {
+                        required: true
+                    },
+                    Category: {
+                        required: true
+                    },
+                    Description: {
+                        required: true
+                    },
+                    Image1: {
+                        required: true
+                    },
+                    Image2: {
+                        required: true
+                    },
+                    Image3: {
+                        required: true
+                    },
+                    Price: {
+                        required: true
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function firstImage() {
+            let result = document.querySelector('.result'),
+                save = document.querySelector('.save'),
+                cropped = document.querySelector('.img1Disp'),
+                upload = document.querySelector('#fileupload1'),
+                cropper = '';
+            upload.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    // start file reader
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (e.target.result) {
+                            // create new image
+                            $("#exampleModalCenter").modal("show");
+                            let img = document.createElement('img');
+                            img.id = 'image';
+                            img.src = e.target.result
+                            // clean result before
+                            result.innerHTML = '';
+                            // append new image
+                            result.appendChild(img);
+                            // init cropper
+                            cropper = new Cropper(img, {
+                                viewMode: 2,
+                                aspectRatio: 5 / 7,
+                                autoCropArea: 1,
+                                cropBoxResizable: false,
+                                crop: function (e) {
+                                    console.log(e.detail.x);
+                                    console.log(e.detail.y);
+                                }
+
+                            });
+                        }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            save.addEventListener('click', (e) => {
+                e.preventDefault();
+                // get result to data uri
+                let imgSrc = cropper.getCroppedCanvas({
+                    width: 300 // img disp value
+                }).toDataURL();
+                $("#exampleModalCenter").modal("hide");
+                console.log('src', imgSrc)
+                console.log('image', cropped.src)
+                cropped.src = imgSrc;
+                console.log('imagee', cropped.src)
+                $("#imageBase64Data1").val(imgSrc);
+                var base = document.getElementById('imageBase64Data1').value
+                console.log(base)
+            });
+        }
+    </script>
+
+    <script>
+        function secondImage() {
+            let result = document.querySelector('.result'),
+                save = document.querySelector('.save'),
+                cropped = document.querySelector('.img2Disp'),
+                upload = document.querySelector('#fileupload2'),
+                cropper = '';
+            upload.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    // start file reader
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (e.target.result) {
+                            // create new image
+                            $("#exampleModalCenter").modal("show");
+                            let img = document.createElement('img');
+                            img.id = 'image';
+                            img.src = e.target.result
+                            // clean result before
+                            result.innerHTML = '';
+                            // append new image
+                            result.appendChild(img);
+                            // init cropper
+                            cropper = new Cropper(img, {
+                                viewMode: 2,
+                                aspectRatio: 5 / 7,
+                                autoCropArea: 1,
+                                cropBoxResizable: false,
+                                crop: function (e) {
+                                    console.log(e.detail.x);
+                                    console.log(e.detail.y);
+                                }
+
+                            });
+                        }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            save.addEventListener('click', (e) => {
+                e.preventDefault();
+                // get result to data uri
+                let imgSrc = cropper.getCroppedCanvas({
+                    width: 300 // img disp value
+                }).toDataURL();
+                $("#exampleModalCenter").modal("hide");
+                console.log('src', imgSrc)
+                cropped.src = imgSrc;
+                console.log('imagee', imgSrc)
+                $("#imageBase64Data2").val(imgSrc);
+                var base = document.getElementById('imageBase64Data2').value
+                console.log(base)
+            });
+        }
+    </script>
+
+    <script>
+        function thirdImage() {
+            let result = document.querySelector('.result'),
+                save = document.querySelector('.save'),
+                cropped = document.querySelector('.img3Disp'),
+                upload = document.querySelector('#fileupload3'),
+                cropper = '';
+            upload.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    // start file reader
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (e.target.result) {
+                            // create new image
+                            $("#exampleModalCenter").modal("show");
+                            let img = document.createElement('img');
+                            img.id = 'image';
+                            img.src = e.target.result
+                            // clean result before
+                            result.innerHTML = '';
+                            // append new image
+                            result.appendChild(img);
+                            // init cropper
+                            cropper = new Cropper(img, {
+                                viewMode: 2,
+                                aspectRatio: 5 / 7,
+                                autoCropArea: 1,
+                                cropBoxResizable: false,
+                                crop: function (e) {
+                                    console.log(e.detail.x);
+                                    console.log(e.detail.y); r
+                                }
+
+                            });
+                        }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            save.addEventListener('click', (e) => {
+                e.preventDefault();
+                // get result to data uri
+                let imgSrc = cropper.getCroppedCanvas({
+                    width: 300 // img disp value
+                }).toDataURL();
+                $("#exampleModalCenter").modal("hide");
+                console.log('src', imgSrc)
+                cropped.src = imgSrc;
+                console.log('imagee', imgSrc)
+                $("#imageBase64Data3").val(imgSrc);
+                var base = document.getElementById('imageBase64Data3').value
+                console.log(base)
+            });
+        }
+    </script>
+
+    <script>
+        function viewImage1(event) {
+            document.getElementById('img1Disp').src = URL.createObjectURL(event.target.files[0])
+            let file = event.target.files[0].name
+            let filename = file.split('.').pop()
+            if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+                $('#add-product-button').show()
+                $('#not-img1-error').hide()
+                $('#img1Disp').show()
+            } else {
+                $('#not-img1-error').show()
+                $('#add-product-button').hide()
+                $('#img1Disp').hide()
+            }
+        }
+    </script>
+
+    <script>
+        function viewImage2(event) {
+            document.getElementById('img2Disp').src = URL.createObjectURL(event.target.files[0])
+            let file = event.target.files[0].name
+            let filename = file.split('.').pop()
+            if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+                $('#add-product-button').show()
+                $('#not-img2-error').hide()
+                $('#img2Disp').show()
+            } else {
+                $('#not-img2-error').show()
+                $('#add-product-button').hide()
+                $('#img2Disp').hide()
+            }
+        }
+    </script>
+
+    <script>
+        function viewImage3(event) {
+            document.getElementById('img3Disp').src = URL.createObjectURL(event.target.files[0])
+            let file = event.target.files[0].name
+            let filename = file.split('.').pop()
+            if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+                $('#add-product-button').show()
+                $('#not-img3-error').hide()
+                $('#img3Disp').show()
+            } else {
+                $('#not-img3-error').show()
+                $('#add-product-button').hide()
+                $('#img3Disp').hide()
+            }
+        }
+    </script>

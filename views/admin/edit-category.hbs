@@ -1,0 +1,30 @@
+<div class="container col-md-6">
+    <div class="card" style="margin-top: 12rem;">
+        <div class="header">
+            <p class="lead">Edit Category</p>
+            <small>Edit a category in TrendZStation</small>
+        </div>
+        <div class="body ml-5">
+            <form class="form-auth-small" id="edit-category" action="/editCategory/{{category._id}}" method="post">
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" class="form-control" value="{{category.Category}}" name="Category" placeholder="Category">
+                </div>
+                <button type="submit" class="btn btn-success btn-lg btn-block">Edit Category</button><br>
+                <div class="bottom">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(() => {
+            $("#edit-category").validate({
+                rules: {
+                    Category: {
+                        required: true
+                    }
+                }
+            });
+        });
+    </script>

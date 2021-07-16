@@ -1,0 +1,82 @@
+<section id="cart_items" style="margin-bottom: 10rem;">
+    <div class="container">
+        <div class="header">
+            <p class="lead" style="margin-top: 10rem;">Edit Address</p>
+        </div>
+
+        <div class="shopper-informations">
+            <div class="row">
+                <div class="col-sm-8">
+                    <form id="edit-user-address" action="/edit-user-address/{{address._id}}" method="post">
+                        <div class="form-group col-sm-6">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="Name" value="{{address.Name}}" name="Name"
+                                placeholder=" Name">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Phone Number</label>
+                            <input type="number" class="form-control" id="phoneNumber" value="{{address.Phone}}"
+                                name="Phone" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" value="{{address.Email}}" name="Email"
+                                placeholder=" Email Address">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Country</label>
+                            <input type="text" class="form-control" id="country" value="{{address.Country}}"
+                                name="Country" placeholder=" Country">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>State</label>
+                            <input type="text" class="form-control" id="state" name="State" value="{{address.State}}"
+                                placeholder=" State">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Pin Code</label>
+                            <input type="number" class="form-control" id="pincode" name="Pincode"
+                                value="{{address.Pincode}}" placeholder=" Enter Pincode">
+                        </div><br>
+                        <button type="submit" class="btn btn-success">Edit Address</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/#cart_items-->
+
+<script>
+    $(document).ready(() => {
+        $("#edit-user-address").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 3
+                },
+                Phone: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                Email: {
+                    required: true
+                },
+                Country: {
+                    required: true
+                },
+                State: {
+                    required: true
+                },
+                Pincode: {
+                    required: true,
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6
+                }
+            }
+        });
+    });
+</script>

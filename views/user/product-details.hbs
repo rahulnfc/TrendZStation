@@ -1,0 +1,135 @@
+<link rel="stylesheet" href="https://codepen.io/imgix/pen/d06269809bb83c85326ebbbf7e81241b">
+<link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/164071/drift-basic.css">
+<section>
+	<div class="container">
+		<div class="row">
+			<section class="content">
+				<article class="demo-area">
+					<div class="col-md-2">
+						<img src="../product-images/{{product._id}}1.jpg"
+							onclick="showImage('../product-images/{{product._id}}1.jpg');" data-pin-nopin="true"
+							class="img-responsive" style="width: 9rem; height: 15rem; float: left;" id="img1" alt="">
+						<img src="../product-images/{{product._id}}2.jpg"
+							onclick="showImage('../product-images/{{product._id}}2.jpg');" data-pin-nopin="true"
+							class="img-responsive" style="width: 9rem; height: 15rem; float: left;" id="img2" alt="">
+						<img src="../product-images/{{product._id}}3.jpg"
+							onclick="showImage('../product-images/{{product._id}}3.jpg');" data-pin-nopin="true"
+							class="img-responsive" style="width: 9rem; height: 15rem; float: left;" id="img3" alt="">
+					</div>
+					<div class="col-md-4">
+						<img class="demo-trigger img-reponsive" src="../product-images/{{product._id}}1.jpg"
+							style="width: 30rem; height: auto;" id="currentImg"
+							data-zoom="../product-images/{{product._id}}1.jpg">
+					</div>
+					<div class="detail col-md-6">
+						<section>
+							<h2>{{product.Name}}</h2>
+							<p>{{product.Category}}</p>
+							<img src="../images/product-details/rating.png" alt="" />
+							<span>
+								<span>₹{{product.Price}}</span>
+								<button type="button" class="btn btn-fefault cart"
+									onclick="addToCart('{{product._id}}')">
+									<i class="fa fa-shopping-cart"></i>
+									Add to cart
+								</button>
+							</span>
+							<p><b>Availability:</b> In Stock</p>
+							<p><b>Condition:</b> New</p>
+							<h2>Description</h2>
+							<p>{{product.Description}}</p>
+						</section>
+					</div>
+				</article>
+			</section>
+		</div>
+	</div><br><br><br>
+</section>
+
+
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/164071/Drift.min.js"></script>
+
+<style>
+	.demo-area {
+		background: $color_invert_fg;
+		border-radius: 8px;
+		padding: 20px;
+
+		section {
+			padding-top: 0;
+		}
+	}
+
+	.demo-trigger {
+		display: inline-block;
+		width: 30%;
+		float: left;
+	}
+
+	.detail {
+		position: relative;
+		width: 40%;
+		margin-left: 5%;
+		float: left;
+
+		button {
+			vertical-align: middle;
+			opacity: .5;
+			cursor: unset;
+			background: $color_invert_chrome_tint;
+			margin-left: 1em;
+		}
+	}
+
+
+	@media (max-width: 610px) {
+
+		.detail,
+		.demo-trigger {
+			float: none;
+		}
+
+		.demo-trigger {
+			display: block;
+			width: 50%;
+			max-width: 200px;
+			margin: 0 auto;
+		}
+
+		.detail {
+			margin: 0;
+			width: auto;
+		}
+
+		p {
+			margin: 0 auto 1em;
+		}
+
+		.responsive-hint {
+			display: none;
+		}
+
+		h3 {
+			margin-top: 20px;
+		}
+	}
+</style>
+
+<script>
+	var demoTrigger = document.querySelector('.demo-trigger');
+	var paneContainer = document.querySelector('.detail');
+
+	new Drift(demoTrigger, {
+		paneContainer: paneContainer,
+		inlinePane: false,
+	});
+</script>
+
+<script type="text/javascript">
+
+	function showImage(imgPath) {
+		var curImage = document.getElementById('currentImg');
+		curImage.src = imgPath;
+	}
+
+</script>

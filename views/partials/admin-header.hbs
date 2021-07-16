@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from www.wrraptheme.com/templates/lucid/html/dark/index8.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 10 Mar 2021 15:20:18 GMT -->
+<head>
+<title>:: TrendZStation :: eCommerce</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="description" content="Lucid Bootstrap 4.1.1 Admin Template">
+<meta name="author" content="WrapTheme, design by: ThemeMakker.com">
+
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<!-- VENDOR CSS -->
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css">
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/jvectormap/jquery-jvectormap-2.0.3.min.css"/>
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/morrisjs/morris.min.css" />
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
+<link rel="stylesheet" href="https://www.wrraptheme.com/templates/lucid/html/./assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
+
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/color_skins.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.css" integrity="sha256-FeDcPwV8ZgxG1MU5L/b2i8clOmqZJKK0eyDHqrQaXxY=" crossorigin="anonymous" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body class="theme-cyan">
+
+ <div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="m-t-30"><img src="../images/home/logo.png" width="200" height="40" alt="Lucid"></div>
+        <p>Please wait...</p>        
+    </div>
+</div>
+<!-- Overlay For Sidebars -->
+<div id="wrapper">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-btn">
+                <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
+            </div>
+
+            <div class="navbar-brand">
+                <a href="/admin"><img src="../images/home/logo.png" style="width: 200px;" alt="Lucid Logo" class="img-responsive logo"></a> 
+            </div>
+        </div>
+    </nav>
+    <div id="left-sidebar" class="sidebar">
+        <div class="sidebar-scroll"> 
+            <div class="user-account">
+                <img src="https://www.wrraptheme.com/templates/lucid/html/assets/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+                <div class="dropdown">
+                    <span>Welcome,</span>
+                    <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>Admin </strong></a>
+                    <ul class="dropdown-menu dropdown-menu-right account">
+                        {{#if rahul}}
+                        <li><a href="/admin-login"><i class="icon-power"></i>Login</a></li>
+                        {{else}}
+                        <li><a href="/admin-logout"><i class="icon-power"></i>Logout</a></li>
+                        {{/if}}
+                    </ul>
+                </div>
+                <hr>
+            </div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#menu">Menu</a></li>
+            </ul>
+                
+            <!-- Tab panes -->
+            <div class="tab-content p-l-0 p-r-0">
+                <div class="tab-pane active" id="menu">
+                    <nav id="left-sidebar-nav" class="sidebar-nav">
+                        <ul id="main-menu" class="metismenu">                            
+                            <li>
+                                <a href="/admin"><i class="icon-home"></i> <span>Dashboard</span></a>
+                            </li>
+                            <li>
+                                <a href="#Users" class="has-arrow"><i class="icon-user"></i> <span>User Management</span></a>
+                                <ul>
+                                    <li><a href="/viewUsers">View User</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#Products" class="has-arrow"><i class="icon-bag"></i> <span>Product Management</span></a>
+                                <ul>
+                                    <li><a href="/ViewProduct">View Products</a> </li>
+                                    <li><a href="/addProduct">Add Products</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#Category" class="has-arrow"><i class="icon-diamond"></i> <span>Category Management</span></a>
+                                <ul>
+                                    <li><a href="/ViewCategory">View Category</a> </li>
+                                    <li><a href="/addCategory">Add Category</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#Orders" class="has-arrow"><i class="icon-pencil"></i> <span>Order Management</span></a>
+                                <ul>
+                                    <li><a href="/view-orders">View Orders</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#Offer" class="has-arrow"><i class="icon-diamond"></i> <span>Offer Management</span></a>
+                                <ul>
+                                    <li><a href="/viewOffer">View Offers</a> </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#Coupon" class="has-arrow"><i class="icon-diamond"></i> <span>Coupon Management</span></a>
+                                <ul>
+                                    <li><a href="/viewCoupon">View Coupon</a> </li>
+                                    <li><a href="/createCoupon">Create Coupon</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#report" class="has-arrow"><i class="icon-tag"></i> <span>Reports</span></a>
+                                <ul>
+                                    <li><a href="/viewReport">Sales Report</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                {{#if rahul}}
+                                <a href="#account" class="has-arrow"><i class="icon-settings"></i> <span>Account</span></a>
+                                {{else}}
+                                <a href="#account" class="has-arrow"><i class="icon-settings"></i> <span>Admin</span></a>
+                                {{/if}}
+                                <ul>
+                                    {{#if rahul}}
+                                    <li><a href="/admin-login"><i class="icon-power"></i>Login</a></li>
+                                    {{else}}
+                                    <li><a href="/admin-logout"><i class="icon-power"></i>Logout</a></li>
+                                    {{/if}}
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>    
+            </div>          
+        </div>
+    </div>
+</div>
+

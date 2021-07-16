@@ -1,0 +1,31 @@
+<div class="container col-md-6">
+    <div class="card" style="margin-top: 12rem;">
+        <div class="header">
+            <p class="lead">Add Category</p>
+            <small>Add a category to TrendZStation</small>
+        </div>
+        <div class="body ml-5">
+            <form class="form-auth-small" id="add-category" action="/addCategory" method="post">
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" class="form-control" name="Category" placeholder="Category">
+                </div>
+                <button type="submit" class="btn btn-success btn-lg btn-block">Add Category</button><br>
+                <div class="bottom">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script>
+        $(document).ready(() => {
+            $("#add-category").validate({
+                rules: {
+                    Category: {
+                        required: true
+                    }
+                }
+            });
+        });
+    </script>

@@ -1,0 +1,128 @@
+<style>
+    table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    table caption {
+        font-size: 1.5em;
+        margin: .5em 0 .75em;
+    }
+
+    table tr {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: .35em;
+    }
+
+    table th,
+    table td {
+        padding: .625em;
+        text-align: center;
+    }
+
+    table th {
+        font-size: .85em;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+
+    @media screen and (max-width: 600px) {
+        table {
+            border: 0;
+        }
+
+        table caption {
+            font-size: 1.3em;
+        }
+
+        table thead {
+            border: none;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        table tr {
+            border-bottom: 3px solid #ddd;
+            display: block;
+            margin-bottom: .625em;
+        }
+
+        table td {
+            border-bottom: 1px solid #ddd;
+            display: block;
+            font-size: .8em;
+            text-align: right;
+        }
+
+        table td::before {
+            /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+            content: attr(data-label);
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        table td:last-child {
+            border-bottom: 0;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="ml-auto mr-auto" style="margin-top: 5rem; margin-bottom: 22rem;">
+            {{#if orders}}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Pincode</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Payment</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each orders}}
+                        <tr>
+                            <td scope="row" data-label="Date">{{this.date}}</td>
+                            <td data-label="Address">
+                                {{this.deliveryDetails.Country}}
+                                {{this.deliveryDetails.State}}
+                            </td>
+                            <td data-label="Pincode">{{this.deliveryDetails.Pincode}}</td>
+                            <td data-label="Phone Number">{{this.deliveryDetails.Phone}}</td>
+                            <td data-label="Price">{{this.totalAmount}}</td>
+                            <td data-label="Payment">{{this.paymentMethod}}</td>
+                            <td data-label="Status">{{this.status}}</td>
+                            <td data-label="View">
+                                <a href="/view-order-products/{{this._id}}" class="btn btn-info"> View Products</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            {{else}}
+            <h2 class="text-center" style="margin-top: 25rem;">You Still Not Order Anything</h2>
+            {{/if}}
+        </div>
+    </div>
+</div>

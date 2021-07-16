@@ -1,0 +1,318 @@
+<style>
+	table {
+		border: 1px solid #ccc;
+		border-collapse: collapse;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table caption {
+		font-size: 1.5em;
+		margin: .5em 0 .75em;
+	}
+
+	table tr {
+		background-color: #f8f8f8;
+		border: 1px solid #ddd;
+		padding: .35em;
+	}
+
+	table th,
+	table td {
+		padding: .625em;
+		text-align: center;
+	}
+
+	table th {
+		font-size: .85em;
+		letter-spacing: .1em;
+		text-transform: uppercase;
+	}
+
+	@media screen and (max-width: 600px) {
+		table {
+			border: 0;
+		}
+
+		table caption {
+			font-size: 1.3em;
+		}
+
+		table thead {
+			border: none;
+			clip: rect(0 0 0 0);
+			height: 1px;
+			margin: -1px;
+			overflow: hidden;
+			padding: 0;
+			position: absolute;
+			width: 1px;
+		}
+
+		table tr {
+			border-bottom: 3px solid #ddd;
+			display: block;
+			margin-bottom: .625em;
+		}
+
+		table td {
+			border-bottom: 1px solid #ddd;
+			display: block;
+			font-size: .8em;
+			text-align: right;
+		}
+
+		table td::before {
+			/*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+			content: attr(data-label);
+			float: left;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		table td:last-child {
+			border-bottom: 0;
+		}
+	}
+</style>
+<section id="cart_items">
+	<div class="container">
+		<table style="margin-top: 5rem; margin-bottom: 2rem;">
+			<thead>
+				<tr>
+					<th scope="col">Item</th>
+					<th scope="col">Description</th>
+					<th scope="col">Price</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Sub Total</th>
+					<th scope="col">Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each products}}
+				<tr>
+					<td scope="row" data-label="Item">
+						<a href="/productDetails/{{this._id}}">
+							<img src="/product-images/{{this.product._id}}1.jpg"
+								style="width:70px; height: 80px; margin-top: 15px; margin-left: 20px;" alt="">
+						</a>
+					</td>
+					<td data-label="Description">
+						<h4><a href="">{{this.product.Name}}</a></h4>
+						<p>{{this.product.Category}}</p>
+					</td>
+					<td data-label="Price">
+						<p>₹{{this.product.Price}}</p>
+					</td>
+					<td data-label="Quantity">
+						<div class="cart_quantity_button">
+							<button class="cart_quantity_up"
+								onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+							<span id="{{this.product._id}}">{{this.quantity}}</span>
+							<button class="cart_quantity_down"
+								onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">
+								+
+							</button>
+						</div>
+					</td>
+					<td data-label="Sub Total" id="sub{{this.product._id}}">₹<span id="subtotal">{{subtotal}}</span></td>
+					<td data-label="Delete">
+						<bttton class="btn btn-danger" onclick="removeProCart('{{this._id}}','{{this.product._id}}')">
+							Remove</bttton>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		<div style="float: right; margin-bottom: 22rem;">
+			<h4>Total Rs.<span id="total">{{totalValue}}</span></h4>
+			<a href="/place-order" class="btn btn-success"><b>Place Order</b></a>
+		</div>
+	</div>
+</section>
+<!--/#cart_items-->
+
+
+
+
+<script>
+	function changeQuantity(cartId, proId, userId, count) {
+		let quantity = parseInt(document.getElementById(proId).innerHTML)
+		count = parseInt(count)
+		console.log(userId)
+		$.ajax({
+			url: '/change-product-quantity',
+			data: {
+				user: userId,
+				cart: cartId,
+				product: proId,
+				count: count,
+				quantity: quantity
+			},
+			method: 'post',
+			success: (response) => {
+				if (response.removeProduct) {
+					return confirm("Product removed from cart")
+					location.reload()
+				} else {
+					console.log(response)
+					document.getElementById(proId).innerHTML = quantity + count
+					document.getElementById('total').innerHTML = response.total
+					document.getElementById('sub' + proId).innerHTML = response.subtotal
+				}
+			}
+		})
+	}
+</script>
+
+<script>
+	function removeProCart(cartId, proId) {
+		if (confirm('Are you sure you want to delete?')) {
+		$.ajax({
+			url: '/removeProCart',
+			data: {
+				cart: cartId,
+				product: proId
+			},
+			method: 'post',
+			success: (response) => {
+				if (response.removeProduct) {
+					location.reload()
+				}
+			}
+		})
+		}
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!-- <section id="do_action">
+	<div class="container">
+		<div class="heading">
+			<h3>What would you like to do next?</h3>
+			<p>Choose if you have a discount code or reward points you want to use or would like to estimate your
+				delivery cost.</p>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="chose_area">
+					<ul class="user_option">
+						<li>
+							<input type="checkbox">
+							<label>Use Coupon Code</label>
+						</li>
+						<li>
+							<input type="checkbox">
+							<label>Use Gift Voucher</label>
+						</li>
+						<li>
+							<input type="checkbox">
+							<label>Estimate Shipping & Taxes</label>
+						</li>
+					</ul>
+					<ul class="user_info">
+						<li class="single_field">
+							<label>Country:</label>
+							<select>
+								<option>United States</option>
+								<option>Bangladesh</option>
+								<option>UK</option>
+								<option>India</option>
+								<option>Pakistan</option>
+								<option>Ucrane</option>
+								<option>Canada</option>
+								<option>Dubai</option>
+							</select>
+
+						</li>
+						<li class="single_field">
+							<label>Region / State:</label>
+							<select>
+								<option>Select</option>
+								<option>Dhaka</option>
+								<option>London</option>
+								<option>Dillih</option>
+								<option>Lahore</option>
+								<option>Alaska</option>
+								<option>Canada</option>
+								<option>Dubai</option>
+							</select>
+
+						</li>
+						<li class="single_field zip-field">
+							<label>Zip Code:</label>
+							<input type="text">
+						</li>
+					</ul>
+					<a class="btn btn-default update" href="">Get Quotes</a>
+					<a class="btn btn-default check_out" href="">Continue</a>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="total_area">
+					<ul>
+						<li>Cart Sub Total <span>$59</span></li>
+						<li>Eco Tax <span>$2</span></li>
+						<li>Shipping Cost <span>Free</span></li>
+						<li>Total <span>$61</span></li>
+					</ul>
+					<a class="btn btn-default update" href="">Update</a>
+					<a class="btn btn-default check_out" href="">Check Out</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section> --}}
+<!--/#do_action-->

@@ -1,0 +1,66 @@
+<div class="container col-md-6">
+    <div class="card" style="margin-top: 12rem;">
+        <div class="header">
+            <p class="lead">Add Category</p>
+            <small>Add a category to TrendZStation</small>
+        </div>
+        <div class="body ml-5">
+            <form class="tm-edit-product-form" id="coupon" method="POST" action="/createCoupon">
+                <div class="form-group mb-3">
+                    <label for="price">Discount percentage (in %)
+                    </label>
+                    <input id="offer" name="offer" type="number" class="form-control validate" />
+                </div>
+                <div id="offerErr" style="display: none;">
+                    <strong style="color: red;">Please give discount below or equals 50</strong>
+                </div>
+                <div class="col-12 mb-3">
+                    <button class="btn btn-success" id="button">generate coupon code</button>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="price">Coupon Code
+                    </label>
+                    <input id="coupon" name="coupon" type="text" class="form-control validate">
+                </div>
+                </main>
+                <div class="col-12">
+                    <button type="submit" id="submit" class="btn btn-primary btn-block text-uppercase">Generate Coupon
+                        Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(() => {
+        $('#button').click((e) => {
+            e.preventDefault()
+            $.ajax({
+                method: 'get',
+                url: '/generate-couponCode',
+
+                success: (response) => {
+                    console.log('Ivide ethii')
+                    console.log(response)
+                    $('#coupon').val(response)
+                }
+            })
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(() => {
+        $("#coupon").validate({
+            rules: {
+                offer: {
+                    required: true,
+                    maxlength: 2
+                },
+                coupon: {
+                    required: true
+                }
+            }
+        })
+    })
+</script>

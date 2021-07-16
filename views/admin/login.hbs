@@ -1,0 +1,46 @@
+<div class="container col-md-6">
+    <div class="card" style="margin-top: 12rem;">
+        <div class="header">
+            <p class="lead">Admin Login</p>
+        </div>
+        <div class="body ml-5">
+            <form class="form-auth-small" id="admin-login" action="/admin-login" method="post">
+                {{#if adminloginErr}}
+                <p style="color: red;">Invalid username or password</p>
+                {{/if}}
+                <div class="form-group">
+                    <label for="signin-email" class="control-label sr-only">Email</label>
+                    <input type="email" class="form-control" name="Email" id="signin-email" placeholder="Email">
+                    {{#if adminemailErr}}
+                    <p style="color: red;">Email doesn't exist</p>
+                    {{/if}}
+                </div>
+                <div class="form-group">
+                    <label for="signin-password" class="control-label sr-only">Password</label>
+                    <input type="password" class="form-control" name="Password" id="signin-password"
+                        placeholder="Password">
+                    {{#if adminpassErr}}
+                    <p style="color: red;">Password doesn't match</p>
+                    {{/if}}
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button><br>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(() => {
+            $("#admin-login").validate({
+                rules: {
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    Password: {
+                        required: true,
+                        password: true
+                    }
+                }
+            });
+        });
+    </script>

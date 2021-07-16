@@ -1,0 +1,118 @@
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-sm-12">
+                    <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
+                                class="fa fa-arrow-left"></i></a> Find Report by Date </h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin"><i class="icon-home"></i></a></li>
+                        <li class="breadcrumb-item">Table</li>
+                        <li class="breadcrumb-item active"> Report by Date</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Sales Details <small>search by date for result the sales</small> </h2>
+                    </div>
+                    <div class="container">
+                        <form method="POST" action="/findReportbyDate">
+                            <label>From Date</label>
+                            <input type="date" id="fromDate" name="fromDate" onchange="handler(event)">
+                            <label>To Date</label>
+                            <input type="Date" id="toDate" name="toDate">
+                            <button type="submit" id="button">search</button>
+                        </form>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table id="view-reports"
+                                class="table css-serial table-bordered table-hover js-basic-example dataTable table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Date</th>
+                                        <th>Order Id</th>
+                                        <th>Status</th>
+                                        <th>Total Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each response}}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{this.date}}</td>
+                                        <td>{{this._id}}</td>
+                                        <td>{{this.status}}</td>
+                                        <td>{{this.totalAmount}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#view-reports').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            drawCallback: function () {
+                var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                $('.buttons-copy')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-csv')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-print')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+            }
+        });
+    });
+</script>
+
+<script>
+    function handler(e) {
+        var first = e.target.value
+        console.log('1111111111111111111', first)
+        document.getElementById('toDate').min = first
+    }
+</script>
+
+<style>
+    .css-serial {
+        counter-reset: serial-number;
+    }
+
+    .css-serial td:first-child:before {
+        counter-increment: serial-number;
+        content: counter(serial-number);
+    }
+</style>
+
+
+{{!-- <script>
+    $(function () {
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#fromDate').attr('min', maxDate);
+        $('#toDate').attr('min', maxDate);
+    });
+</script> --}}

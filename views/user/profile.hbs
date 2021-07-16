@@ -1,0 +1,351 @@
+<style>
+  body {
+    background-color: #f9f9fa
+  }
+
+  .padding {
+    padding: 3rem !important
+  }
+
+  .user-card-full {
+    overflow: hidden
+  }
+
+  .card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    border: none;
+    margin-bottom: 30px
+  }
+
+  .m-r-0 {
+    margin-right: 0px
+  }
+
+  .m-l-0 {
+    margin-left: 0px
+  }
+
+  .user-card-full .user-profile {
+    border-radius: 5px 0 0 5px
+  }
+
+  .bg-c-lite-green {
+    background:
+      -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+    background: linear-gradient(to right, #ee5a6f, #f29263)
+  }
+
+  .user-profile {
+    padding: 20px 0
+  }
+
+  .card-block {
+    padding: 1.25rem
+  }
+
+  .m-b-25 {
+    margin-bottom:
+      25px
+  }
+
+  .img-radius {
+    border-radius: 5px
+  }
+
+  h6 {
+    font-size: 14px
+  }
+
+  .card .card-block p {
+    line-height: 25px
+  }
+
+  @media only screen and (min-width: 1400px) {
+    p {
+      font-size: 14px
+    }
+  }
+
+  .card-block {
+    padding: 1.25rem
+  }
+
+  .b-b-default {
+    border-bottom: 1px solid #e0e0e0
+  }
+
+  .m-b-20 {
+    margin-bottom: 20px
+  }
+
+  .p-b-5 {
+    padding-bottom: 5px !important
+  }
+
+  .card .card-block p {
+    line-height: 25px
+  }
+
+  .m-b-10 {
+    margin-bottom: 10px
+  }
+
+  .text-muted {
+    color: #919aa3 !important
+  }
+
+  .b-b-default {
+    border-bottom: 1px solid #e0e0e0
+  }
+
+  .f-w-600 {
+    font-weight: 600
+  }
+
+  .m-b-20 {
+    margin-bottom: 20px
+  }
+
+  .m-t-40 {
+    margin-top: 20px
+  }
+
+  .p-b-5 {
+    padding-bottom: 5px !important
+  }
+
+  .m-b-10 {
+    margin-bottom: 10px
+  }
+
+  .m-t-40 {
+    margin-top: 20px
+  }
+
+  .user-card-full .social-link li {
+    display: inline-block
+  }
+
+  .user-card-full .social-link li a {
+    font-size: 20px;
+    margin: 0 10px 0 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out
+  }
+
+  #profilepic {
+    padding: 1rem;
+    margin-left: 11rem;
+    background: rgb(14, 226,
+        138);
+    display: table;
+    color: #fff;
+  }
+</style>
+<div class="page-content page-container" id="page-content">
+  <div class="padding">
+    <div class="row container d-flex justify-content-center">
+      <div class="col-xl-6 col-md-12">
+        <div class="card user-card-full">
+          <div class="row m-l-0 m-r-0">
+            <div class="col-sm-4 bg-c-lite-green user-profile">
+              <div class="card-block text-center text-white">
+                <div class="m-b-25">
+                  <div>
+                    <form method="POST" enctype="multipart/form-data" action="/profileUpload/{{profile._id}}">
+                      <div class="row mt-2">
+                        <div class="col-md-5">
+                          <div class="col-md-3" style="margin-left: 12rem;">
+                            <img src="../userImages/{{profile._id}}.jpg" style="width: 10rem;" alt="" id="img1Disp"
+                              class="img1Disp img-radius" />
+                            <textarea name="imageBase64Data1" id="imageBase64Data1" cols="30" rows="10"
+                              hidden></textarea>
+                            <h6 id="not-img1-error" style="color: rgb(163, 24, 24);display: none;">
+                              !! Please upload a image !!
+                            </h6>
+                            <button style="display: none; margin-left: 4rem; margin-top: 1rem;" id="button"
+                              class="ml-4">
+                              <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
+                            </button>
+                          </div>
+                          <span class="btn vd_btn vd_bg-green fileinput-button">
+                            <!-- The file input field used as target for the file upload widget -->
+                            <label id="profilepic" class="btn mt-5">
+                              Profile Photo
+                              <i style=" color: rgb(22, 134, 199);" class="fa fa-upload"></i>
+                              <input type="file" accept="image/*" name="image1" id="fileupload1" class="js-photo-upload"
+                                onchange="viewImage1(event)" onclick="firstImage()" style="display: none;" required />
+                            </label>
+                          </span>
+                        </div>
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="result"></div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" id="load" class="btn btn-success save">Save changes</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <h6 class="f-w-600">{{profile.Name}}</h6>
+                    <p>@{{profile.Username}}</p>
+                    <div>
+                      <a class="btn btn-info" href="/edit-profile">Edit Profile</a>
+                      <a class="btn btn-warning" href="/add-user-address">Add
+                        Address</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="card-block">
+                <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">Name</p>
+                    <h6 class="text-muted f-w-400">{{profile.Name}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">Username</p>
+                    <h6 class="text-muted f-w-400">{{profile.Username}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">Email</p>
+                    <h6 class="text-muted f-w-400">{{profile.Email}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">Phone</p>
+                    <h6 class="text-muted f-w-400">{{profile.Mobile}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">My Referal Code</p>
+                    <h6 class="text-muted f-w-400">{{profile.referalcode}}</h6>
+                  </div>
+                  {{#if profile.credits}}
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">My Credits</p>
+                    <h6 class="text-muted f-w-400">{{profile.credits}}</h6>
+                  </div>
+                  {{else}}
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600">My Credits</p>
+                    <h6 class="text-muted f-w-400">0</h6>
+                  </div>
+                  {{/if}}
+                </div>
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">
+                  My Address</h6>
+                {{#each address}}
+                <div class="col-sm-6" style="margin-bottom: 4%; margin-top: 2%;">
+                  <p class="m-b-10 f-w-600">Your Address</p>
+                  <h5 class="text-muted f-w-400">{{this.Name}}</h5>
+                  <h5 class="text-muted f-w-400">{{this.Phone}}</h5>
+                  <h5 class="text-muted f-w-400">{{this.Email}}</h5>
+                  <h5 class="text-muted f-w-400">{{this.Country}},
+                    {{this.State}},{{this.Pincode}}
+                  </h5>
+                  <a href="/edit-user-address/{{this._id}}" class="btn btn-success">Edit Address</a>
+                </div>
+                {{/each}}
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
+
+<script>
+  function firstImage() {
+    let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.img1Disp'),
+      upload = document.querySelector('#fileupload1'),
+      cropper = '';
+    upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        //start file reader 
+        const reader = new FileReader(); reader.onload = (e) => {
+          if (e.target.result) {
+            // create new image
+            $("#exampleModalCenter").modal("show");
+            let img = document.createElement('img');
+            img.id = 'image'; img.src = e.target.result
+            //clean result before 
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // init cropper
+            cropper = new Cropper(img, {
+              viewMode: 2,
+              aspectRatio: 7 / 7,
+              autoCropArea: 1,
+              cropBoxResizable: false,
+              crop: function (e) {
+                console.log(e.detail.x);
+                console.log(e.detail.y);
+              }
+            });
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri 
+      let imgSrc = cropper.getCroppedCanvas({
+        width: 300
+        // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      console.log('src', imgSrc)
+      console.log('image', cropped.src)
+      cropped.src = imgSrc;
+      console.log('imagee', cropped.src)
+      $("#imageBase64Data1").val(imgSrc);
+      var base = document.getElementById('imageBase64Data1').value
+      console.log(base)
+    });
+  }
+</script>
+
+<script>
+  function viewImage1(event) {
+    document.getElementById('img1Disp').src = URL.createObjectURL(event.target.files[0])
+    let file = event.target.files[0].name
+    let filename = file.split('.').pop()
+    if (filename == 'jpeg' || filename == 'png' || filename == 'jpg') {
+      $('#add-product-button').show()
+      $('#not-img1-error').hide()
+      $('#img1Disp').show()
+      $('#button').show()
+    }
+    else {
+      $('#not-img1-error').show()
+      $('#add-product-button').hide()
+      $('#img1Disp').hide()
+    }
+  }
+</script>

@@ -1,0 +1,126 @@
+<div class="container">
+    <div class="row" style="margin-top: 7rem;">
+        <div class="card col-md-8">
+            <div class="header">
+                <p class="lead">Edit Profile</p>
+            </div>
+            <div class="body ml-5">
+                <form class="form-auth-small" id="user-profile" action="/edit-profile/{{profile._id}}" method="post">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" value="{{profile.Name}}" name="Name" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" value="{{profile.Username}}" name="Username"
+                            placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" value="{{profile.Email}}" name="Email"
+                            placeholder="Email Address" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="number" class="form-control" value="{{profile.Mobile}}" name="Mobile"
+                            placeholder="Mobile Number">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-success">Update Profile</button>
+                    </div><br><br><br>
+                </form>
+            </div>
+        </div>
+        <div class="card col-md-4">
+            <div class="header">
+                <p class="lead">Change Password</p>
+            </div>
+            <div class="body ml-5">
+                <form class="form-auth-small" id="update-password" action="/updatePassword/{{profile._id}}"
+                    method="post">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control" name="CurrentPassword" id="CurrentPass"
+                            placeholder="Current Password">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" id="Password" name="Password"
+                            placeholder="New Password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" id="CPassword" name="CPassword"
+                            placeholder="Confirm Password">
+                    </div>
+                    <div id="showErrPwd"></div>
+                    {{#if currentPassErr}}
+                    <span style="color: red;"><strong>**Invalid current password**</strong></span>
+                    {{/if}}
+                    <div>
+                        <button type="submit" id="changePass" class="btn btn-success">Update
+                            Password</button>
+                    </div><br><br><br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(() => {
+        $("#user-profile").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 3
+                },
+                Username: {
+                    required: true,
+                    minlength: 3
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                Mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                }
+            }
+        });
+
+        $("#update-password").validate({
+            rules: {
+                CurrentPassword: {
+                    required: true,
+                    minlength: 5
+                },
+                Password: {
+                    required: true,
+                    minlength: 5
+                },
+                CPassword: {
+                    required: true,
+                    minlength: 5
+                }
+            }
+        });
+
+        $('#CPassword').keyup(function () {
+            console.log("hiii")
+            var Password = $('#Password').val();
+            var CPassword = $('#CPassword').val();
+            if (CPassword != Password) {
+                $('#showErrPwd').html('**Password are not matching**');
+                $('#showErrPwd').css('color', 'red');
+                return false;
+            } else {
+                $('#showErrPwd').html('');
+                return true;
+            }
+        });
+    })
+
+</script>

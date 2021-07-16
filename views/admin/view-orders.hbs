@@ -1,0 +1,180 @@
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-sm-12">
+                    <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
+                                class="fa fa-arrow-left"></i></a> Order Management </h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin"><i class="icon-home"></i></a></li>
+                        <li class="breadcrumb-item">Table</li>
+                        <li class="breadcrumb-item active">Order details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>order Details <small>view the order details</small> </h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table id="view-products"
+                                class="table css-serial table-bordered table-hover js-basic-example dataTable table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Pincode</th>
+                                        <th>Phone Number</th>
+                                        <th>Price</th>
+                                        <th>Payment</th>
+                                        <th>Status</th>
+                                        <th>Change Order Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each orders}}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{this.date}}</td>
+                                        <td>{{this.deliveryDetails.Name}}</td>
+                                        <td>{{this.deliveryDetails.Country}}
+                                            {{this.deliveryDetails.State}}</td>
+                                        <td>{{this.deliveryDetails.Pincode}}</td>
+                                        <td>{{this.deliveryDetails.Phone}}</td>
+                                        <td>{{this.totalAmount}}</td>
+                                        <td>{{this.paymentMethod}}</td>
+                                        <td id="{{this._id}}">
+
+                                            {{#ifEquals this.status "placed"}}
+                                            Order Placed
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Confirm"}}
+                                            Order Shipped
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Deliver"}}
+                                            Order Delivered
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Ship"}}
+                                            Order dispatched
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Cancel"}}
+                                            Order Cancelled
+                                            {{/ifEquals}}
+                                        </td>
+                                        <td>
+                                            {{#ifEquals this.status "placed"}}
+                                            <div class="input-group">
+                                                <select class="badge badge-info" id="status"
+                                                    aria-label="Example select with button addon">
+
+                                                    <option value="placed">Placed</option>
+                                                    <option value="confirm">Confirm</option>
+                                                    <option value="cancel" onclick="return confirm('Are you sure to cancel this Order')">Cancel</option>
+                                                </select>
+                                                <div class="input-group-append mt-2">
+                                                    <button class="badge badge-dark" type="button"
+                                                        onclick="status('{{_id}}')">Submit</button>
+                                                </div>
+                                            </div>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Confirm"}}
+                                            <div class="input-group">
+                                                <select class="badge badge-warning" id="status"
+                                                    aria-label="Example select with button addon">
+                                                    <option value="confirm">Confirm</option>
+                                                    <option value="ship">Ship</option>
+                                                    <option value="cancel" onclick="return confirm('Are you sure to cancel this Order')">Cancel</option>
+                                                </select>
+                                                <div class="input-group-append mt-2">
+                                                    <button class="badge badge-dark" type="button"
+                                                        onclick="status('{{_id}}')">Submit</button>
+                                                </div>
+                                            </div>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Ship"}}
+                                            <div class="input-group">
+                                                <select class="badge badge-success" id="status"
+                                                    aria-label="Example select with button addon">
+                                                    <option value="ship">Ship</option>
+                                                    <option value="deliver">Deliver</option>
+                                                    <option value="cancel" onclick="return confirm('Are you sure to cancel this Order')">Cancel</option>
+                                                </select>
+                                                <div class="input-group-append mt-2">
+                                                    <button class="badge badge-dark" type="button"
+                                                        onclick="status('{{_id}}')">Submit</button>
+                                                </div>
+                                            </div>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Deliver"}}
+                                            <h4 class="text-white badge btn-success">Delivered</h4>
+                                            {{/ifEquals}}
+                                            {{#ifEquals this.status "Cancel"}}
+                                            <h4 class="text-white badge btn-danger">Cancelled</h4>
+                                            {{/ifEquals}}
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .css-serial {
+        counter-reset: serial-number;
+    }
+
+    .css-serial td:first-child:before {
+        counter-increment: serial-number;
+        content: counter(serial-number);
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function status(id) {
+        var e = document.getElementById('status')
+        var status = e.options[e.selectedIndex].text;
+        $.ajax({
+            method: 'post',
+            url: '/changeStatus',
+            data: { status, id },
+            success: (response) => {
+                if (response.order.status === 'Confirm') {
+                    document.getElementById(id).innerHTML = "Order Ready to be shipped"
+                    location.reload()
+                }
+                else if (response.order.status === 'Deliver') {
+                    document.getElementById(id).innerHTML = "Order delivered"
+                    location.reload()
+                }
+                else if (response.order.status === 'Ship') {
+                    document.getElementById(id).innerHTML = " Order dispatched"
+                    location.reload()
+                }
+                else if (response.order.status === 'Cancel') {
+                    document.getElementById(id).innerHTML = "Order Cancelled"
+                    location.reload()
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#view-product').DataTable();
+    });
+</script>
