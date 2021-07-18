@@ -45,8 +45,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-app.use(session({ secret: 'key1', key: 'admin', cookie: { path: '/', maxAge: 6000000000000000000000000000000 } }))
-app.use(session({ secret: 'key2', key: 'user', cookie: { path: '/', maxAge: 6000000000000000000000000000000 } }))
+app.use(session({ secret: 'key1', key: 'admin', resave: true, saveUninitialized: false, cookie: { path: '/', maxAge: 6000000000000000000000000000000 } }))
+app.use(session({ secret: 'key2', key: 'user', resave: true, saveUninitialized: false, cookie: { path: '/', maxAge: 6000000000000000000000000000000 } }))
 db.connect((err) => {
   if (err) console.log('Connection error' + err);
   else console.log('Database connected to port 27017');
