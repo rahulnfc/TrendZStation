@@ -95,15 +95,8 @@
 		cardContainer = document.getElementById("MyItems");
 		cards = cardContainer.getElementsByClassName("product-item");
 		myProd = document.getElementsByClassName("myProd")
-		console.log('input' + input)
-		console.log('filter' + filter)
-		console.log('cardContainer' + cardContainer)
-		console.log('cards' + cards)
-
-
 		for (i = 0; i < cards.length; i++) {
 			title = cards[i].querySelector(".product-info p.name");
-			console.log('title' + title)
 			if (title.innerText.toUpperCase().indexOf(filter) > -1) {
 				myProd[i].style.display = "";
 			} else {

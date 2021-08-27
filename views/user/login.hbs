@@ -83,7 +83,6 @@
 <script>
 	$(document).ready(function () {
 		$('#CPassword').keyup(function () {
-			console.log("hiii")
 			var Password = $('#Password').val();
 			var CPassword = $('#CPassword').val();
 			if (CPassword != Password) {
@@ -169,7 +168,6 @@
 	$('#butt2').click((e) => {
 		e.preventDefault()
 		let OTP = $('#OTP').val()
-		console.log('11111111111111111111111111',OTP)
 		$.ajax({
 			url: '/verify-otp',
 			method: 'post',

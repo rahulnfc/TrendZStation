@@ -14,7 +14,6 @@ module.exports = {
         })
     },
     addProduct: (product, callback) => {
-        console.log(product)
         product.Price = parseInt(product.Price)
         db.get().collection('product').insertOne(product).then((data) => {
             callback(data.ops[0]._id)
@@ -28,9 +27,7 @@ module.exports = {
     },
     deleteProduct: (prodId) => {
         return new Promise((resolve, reject) => {
-            console.log(prodId)
             db.get().collection(collection.PRODUCT_COLLECTOION).removeOne({ _id: objectId(prodId) }).then((response) => {
-                console.log(response);
                 resolve(response)
             })
         })
@@ -101,7 +98,6 @@ module.exports = {
     },
     updateCategory: (categoryId, categoryDetails) => {
         return new Promise((resolve, reject) => {
-            console.log(categoryId);
             db.get().collection(collection.CATEGORY_COLLECTION)
                 .updateOne({ _id: objectId(categoryId) }, {
                     $set: {
@@ -119,7 +115,6 @@ module.exports = {
         })
     },
     changeStatus: (order) => {
-        console.log("data", order);
         return new Promise(async (resolve, reject) => {
             let result = await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(order.id) },
                 {
@@ -228,7 +223,6 @@ module.exports = {
                 response.total[i] = graphData[i].total
             }
             resolve(response)
-            console.log("ReS IS", response);
         })
     },
     getOrderByDate: (req) => {
@@ -349,8 +343,6 @@ module.exports = {
 
                     current_date = Date.parse(current_date)
                     let valid_date = Date.parse(allProducts[i].ValidTo)
-
-                    console.log(current_date, valid_date);
                     if (current_date > valid_date) {
                         db.get().collection(collection.PRODUCT_COLLECTOION).updateOne({ _id: objectId(allProducts[i]._id) }, {
                             $set: {

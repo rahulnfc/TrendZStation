@@ -178,7 +178,6 @@
 							alert('Order Placed Successfuly!');
 							window.location.href = ('/order-success')
 						} else if (response.paypal) {
-							console.log('response', response.paypal)
 							// Render the PayPal button into #paypal-button-container
 							paypal.Buttons({
 								// Set up the transaction
@@ -270,10 +269,8 @@
 
 <script>
 	function applyCoupon() {
-		console.log('ividund')
 		let coupon = $('#input-coupon').val()
 		let user = $('#input-user').val()
-		console.log("couponhere", coupon)
 		$.ajax({
 			url: '/verifyCoupon',
 			method: 'POST',
@@ -291,15 +288,11 @@
 					let totalAmount = document.getElementById('grandTotal').innerHTML
 					let discountPrice = totalAmount * (100 - response.offer) / 100
 
-
 					document.getElementById('grandTotal').innerHTML = discountPrice
 					document.getElementById('voucher-discount').innerHTML = discountPrice
 					document.getElementById('discountprice').innerHTML = response.offer
 
 					$('#offerId').val(response.offer)
-					console.log('@@@@@@@@@@', discountPrice)
-
-
 				}
 				else if (response.status == 2) {
 					$('#used').show()
@@ -338,7 +331,6 @@
 						alert('Order Placed Successfuly!');
 						window.location.href = ('/order-success')
 					} else if (response.paypal) {
-						console.log('response', response.paypal)
 						// Render the PayPal button into #paypal-button-container
 						paypal.Buttons({
 							// Set up the transaction

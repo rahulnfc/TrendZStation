@@ -21,12 +21,10 @@ const verifyLogin = (req, res, next) => {
   }
 }
 const verifyBlock = (req, res, next) => {
-  console.log(req.session);
   let user = req.session.user
   if (user) {
     userHelpers.getUserDetails(req.session.user._id).then((user) => {
       if (user) {
-        console.log(user)
         req.session.destroy()
         res.redirect('/login')
       } else {
@@ -41,7 +39,6 @@ const verifyBlock = (req, res, next) => {
 /* GET home page. */
 router.get('/', verifyBlock, async (req, res) => {
   let user = req.session.user
-  console.log(req.session.user)
   let userPage = true
   let cartCount = null
   adminHelpers.expireOffer()
@@ -50,7 +47,6 @@ router.get('/', verifyBlock, async (req, res) => {
   }
   let category = await adminHelpers.getAllCategory(req.params.id)
   adminHelpers.getAllProducts().then((products) => {
-    console.log(products)
     res.render('index', { user, products, userPage, category, cartCount })
   })
 });
@@ -58,7 +54,6 @@ router.get('/', verifyBlock, async (req, res) => {
 router.get('/login', async (req, res) => {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   let user = req.session.userLoggedIn
-  console.log(user)
   let userPage = true
   let category = await adminHelpers.getAllCategory(req.params.id)
   if (user) {
@@ -72,11 +67,9 @@ router.get('/login', async (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
-  console.log(req.body);
   let referalcodeis = referal.generate({ length: 8, count: 1 })
   let referalcode = referalcodeis[0]
   userHelpers.doSignup(req.body, referalcode).then((response) => {
-    console.log(response);
     req.session.userLoggedIn = true
     req.session.user = response
     res.redirect('/')
@@ -126,7 +119,6 @@ router.get('/productDetails/:id', verifyBlock, async (req, res) => {
 });
 
 router.get('/add-to-cart/:id', (req, res) => {
-  console.log('api call');
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
     res.json({ status: true })
   })
@@ -148,13 +140,11 @@ router.get('/cart', verifyBlock, verifyLogin, async (req, res) => {
     res.redirect('/')
   }
   let category = await adminHelpers.getAllCategory(req.params.id)
-  console.log(products)
   res.render('user/cart', { userPage, user, products, totalValue, cartCount, category })
 });
 
 router.get('/category/:id', async (req, res) => {
   let catId = req.params.id
-  console.log(catId)
   let user = req.session.user
   let userPage = true
   let cartCount = null
@@ -182,7 +172,6 @@ router.post('/change-product-quantity', async (req, res, next) => {
 
 router.post('/removeProCart', (req, res) => {
   userHelpers.removeProCart(req.body).then((removeProCart) => {
-    console.log(removeProCart)
     res.json(removeProCart)
   })
 });
@@ -251,20 +240,17 @@ router.get('/edit-user-address/:id', verifyLogin, verifyBlock, async (req, res) 
 
 router.post('/edit-user-address/:id', (req, res) => {
   let id = req.params.id
-  console.log(id);
   userHelpers.updateAddress(id, req.body).then(() => {
     res.redirect('/profile');
   })
 })
 
 router.post('/place-order', async (req, res) => {
-  console.log(req.body.userId);
   let user = req.session.user
   let products = await userHelpers.getCartProductList(req.body.UserId)
   let totalPrice = await userHelpers.getTotalAmount(req.body.UserId)
 
   let discount = req.body.offerId
-  console.log('111111111111111', discount);
   if (discount) {
     totalPrice = totalPrice * (100 - discount) / 100
   }
@@ -273,11 +259,9 @@ router.post('/place-order', async (req, res) => {
   if (creditCount.credits) {
     totalPrice = totalPrice - (user.credits * 10)
     userHelpers.removeCredits(user._id)
-    console.log("totalil ninn credit minused", totalPrice);
   }
 
   userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
-    console.log(req.body)
     if (req.body['Payment'] === 'COD') {
       res.json({ codSuccess: true })
     } else if (req.body['Payment'] === "PAYPAL") {
@@ -288,7 +272,6 @@ router.post('/place-order', async (req, res) => {
       })
     }
   })
-  console.log(req.body);
 });
 
 router.get('/order-success', verifyLogin, verifyBlock, async (req, res) => {
@@ -327,33 +310,25 @@ router.get('/view-order-products/:id', verifyBlock, verifyLogin, async (req, res
 });
 
 router.post('/verify-payment', (req, res) => {
-  console.log(req.body);
   userHelpers.verifyPayment(req.body).then(() => {
     userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
-      console.log('payment successful');
       res.json({ status: true })
     })
   }).catch((err) => {
-    console.log(err)
     res.json({ status: false })
   })
 });
 
 router.get('/change-status/:id', (req, res) => {
-  console.log(req.params.id)
   let orderId = req.params.id
   userHelpers.changePaymentStatus(orderId).then(() => {
-    console.log('payment successful');
     res.redirect('/order-success')
   })
 })
 
 router.post('/send-otp', async (req, res) => {
-  console.log(req.body.Mobile);
   phone = req.body.Mobile
-  console.log(phone);
   let mob = await userHelpers.checkPhone(phone)
-  console.log(mob);
   let response = {}
   if (mob) {
     client
@@ -365,8 +340,6 @@ router.post('/send-otp', async (req, res) => {
         channel: 'sms'
       })
       .then((data) => {
-        console.log(data);
-
         response.data = data
         response.otp = true
         res.json({ response })
@@ -380,10 +353,7 @@ router.post('/send-otp', async (req, res) => {
 });
 
 router.post('/verify-otp', async (req, res) => {
-  console.log(req.body.OTP);
   let OTP = req.body.OTP
-  console.log(OTP)
-  console.log(phone)
   client
     .verify
     .services(config.serviceID)
@@ -392,17 +362,14 @@ router.post('/verify-otp', async (req, res) => {
       to: '+91' + phone,
       code: OTP
     }).then(async (data) => {
-      console.log(data, "ggggggggggggggggggg");
       if (data.status == 'approved') {
         let user = await userHelpers.OtpLog(phone)
-        console.log(user, "hhh");
         if (user) {
           let response = {}
           response.data = data,
             response.otp = true,
             response.user = user,
             req.session.userLoggedIn = true
-          console.log(req.session.userLoggedIn)
           req.session.user = response.user
           res.json(response)
         } else {
@@ -445,7 +412,6 @@ router.get('/edit-profile', verifyLogin, verifyBlock, async (req, res) => {
 
 router.post('/edit-profile/:id', (req, res) => {
   let id = req.params.id
-  console.log(id);
   userHelpers.updateUser(id, req.body).then(() => {
     res.redirect('/profile');
   })
@@ -453,8 +419,6 @@ router.post('/edit-profile/:id', (req, res) => {
 
 router.post('/profileUpload/:id', (req, res) => {
   let id = req.params.id
-  console.log(id,'idddddddddddddddddddddddddddd')
-  console.log(req.body)
   var base64Str1 = req.body.imageBase64Data1
   var path = "./public/userImages/";
   var optionalObj = { fileName: id, type: "jpg" };
@@ -466,7 +430,6 @@ router.post('/updatePassword/:id', (req, res) => {
   let currentPass = req.body.CurrentPassword
   let password = req.body.Password
   let userId = req.params.id
-  console.log(userId)
   userHelpers.changePassword(currentPass, password, userId).then((response) => {
     if (response.status) {
       res.redirect('/profile')
@@ -492,7 +455,6 @@ router.get('/MyCoupons', verifyLogin, verifyBlock, async (req, res) => {
 router.post('/verifyCoupon', (req, res) => {
   let coupon = req.body.coupon
   let user = req.body.user
-  console.log("dey ith ivid undo", req.body)
   userHelpers.verifyCoupon(coupon, user).then((response) => {
     res.json(response)
   })

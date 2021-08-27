@@ -88,7 +88,6 @@ router.get('/viewProduct', verifyLogin, (req, res) => {
   req.session.admin = true
   adminHelpers.getAllProducts().then(async (products) => {
     let product = await adminHelpers.getProductDetails(req.params.id)
-    console.log('products')
     res.render('admin/view-products', { admin: true, products, product })
   })
 });
@@ -96,7 +95,6 @@ router.get('/viewProduct', verifyLogin, (req, res) => {
 router.get('/addProduct', verifyLogin, (req, res) => {
   req.session.admin = true
   adminHelpers.getAllCategory().then((category) => {
-    console.log(category);
     res.render('admin/add-product', { admin: true, category })
   })
 });
@@ -105,19 +103,16 @@ router.post('/addProduct', (req, res) => {
   adminHelpers.addProduct(req.body, (id) => {
 
     var base64Str1 = req.body.imageBase64Data1
-    console.log(base64Str1);
     var path = "./public/product-images/";
     var optionalObj = { fileName: id + '1', type: "jpg" };
     base64ToImage(base64Str1, path, optionalObj);
 
     var base64Str2 = req.body.imageBase64Data2
-    console.log(base64Str2);
     var path = "./public/product-images/";
     var optionalObj = { fileName: id + '2', type: "jpg" };
     base64ToImage(base64Str2, path, optionalObj);
 
     var base64Str3 = req.body.imageBase64Data3
-    console.log(base64Str3);
     var path = "./public/product-images/";
     var optionalObj = { fileName: id + '3', type: "jpg" };
     base64ToImage(base64Str3, path, optionalObj);
@@ -128,7 +123,6 @@ router.post('/addProduct', (req, res) => {
 
 router.get('/deleteProduct/:id', (req, res) => {
   let proId = req.params.id
-  console.log(proId)
   adminHelpers.deleteProduct(proId).then((response) => {
     res.redirect('/viewProduct');
   })
@@ -138,30 +132,24 @@ router.get('/editProduct/:id', verifyLogin, async (req, res) => {
   req.session.admin = true
   let product = await adminHelpers.getProductDetails(req.params.id)
   let category = await adminHelpers.getAllCategory(req.params.id)
-  console.log(product);
-  console.log(category);
   res.render('admin/edit-product', { admin: true, product, category })
 });
 
 router.post('/editProduct/:id', (req, res) => {
-  console.log(req.params.id)
   let id = req.params.id
   adminHelpers.updateProduct(req.params.id, req.body).then(() => {
 
     var base64Str1 = req.body.imageBase64Data1
-    console.log(base64Str1);
     var path = "./public/product-images/";
     var optionalObj = { fileName: id + '1', type: "jpg" };
     base64ToImage(base64Str1, path, optionalObj);
 
     var base64Str2 = req.body.imageBase64Data2
-    console.log(base64Str2);
     var path = "./public/product-images/";
     var optionalObj = { fileName: id + '2', type: "jpg" };
     base64ToImage(base64Str2, path, optionalObj);
 
     var base64Str3 = req.body.imageBase64Data3
-    console.log(base64Str3);
     var path = "./public/product-images/";
     var optionalObj = { fileName: id + '3', type: "jpg" };
     base64ToImage(base64Str3, path, optionalObj);
@@ -198,14 +186,12 @@ router.post('/addCategory', (req, res) => {
 router.get('/viewCategory', verifyLogin, (req, res) => {
   req.session.admin = true
   adminHelpers.getAllCategory(req.body).then((category) => {
-    console.log('category')
     res.render('admin/view-category', { admin: true, category })
   })
 });
 
 router.get('/deleteCategory/:id', (req, res) => {
   let categoryId = req.params.id
-  console.log(categoryId)
   adminHelpers.deleteCategory(categoryId).then((response) => {
     res.redirect('/viewCategory')
   })
@@ -214,12 +200,9 @@ router.get('/deleteCategory/:id', (req, res) => {
 router.get('/editCategory/:id', verifyLogin, async (req, res) => {
   req.session.admin = true
   let category = await adminHelpers.getCategoryDetails(req.params.id)
-  console.log(category);
-  res.render('admin/edit-category', { admin: true, category })
-});
+  res.render('admin/edit-category', { admin: true, category })});
 
 router.post('/editCategory/:id', (req, res) => {
-  console.log(req.params.id)
   let categoryId = req.params.id
   adminHelpers.updateCategory(categoryId, req.body).then(() => {
     res.redirect('/viewCategory')
@@ -251,7 +234,6 @@ router.get('/viewReport', verifyLogin, async (req, res) => {
 
 router.post('/findReportbyDate', verifyLogin, (req, res) => {
   adminHelpers.getOrderByDate(req.body).then((response) => {
-    console.log("yeah its wrking", response);
     res.render('admin/viewSalesByDate', { admin: true, response })
   })
 
@@ -264,7 +246,6 @@ router.post('/createDiscount', (req, res) => {
   let from = req.body.ValidFrom
   let to = req.body.ValidTo
   adminHelpers.createOffer(id, price, discount, from, to).then((response) => {
-    console.log(response)
     res.redirect('/viewProduct')
   })
 })
@@ -275,7 +256,6 @@ router.post('/catDiscount', (req, res) => {
   let from = req.body.ValidFrom
   let to = req.body.ValidTo
   adminHelpers.catOffer(catName, catDiscount, from, to).then((response) => {
-    console.log(response)
     res.redirect('/viewCategory')
   })
 })

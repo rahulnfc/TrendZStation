@@ -320,13 +320,9 @@
         // img disp value
       }).toDataURL();
       $("#exampleModalCenter").modal("hide");
-      console.log('src', imgSrc)
-      console.log('image', cropped.src)
       cropped.src = imgSrc;
-      console.log('imagee', cropped.src)
       $("#imageBase64Data1").val(imgSrc);
       var base = document.getElementById('imageBase64Data1').value
-      console.log(base)
     });
   }
 </script>
