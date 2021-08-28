@@ -50,7 +50,7 @@ app.use(session({ secret: 'key1', key: 'admin', resave: true, saveUninitialized:
 app.use(session({ secret: 'key2', key: 'user', resave: true, saveUninitialized: false, cookie: { path: '/', maxAge: 6000000000000000000000000000000 } }))
 db.connect((err) => {
   if (err) console.log('Connection error' + err);
-  else console.log('Database connected to port 27017');
+  else console.log('Database connected to port 27017 💯💯💯');
 });
 app.use('/', userRouter);
 app.use('/', adminRouter);
